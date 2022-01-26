@@ -66,7 +66,7 @@ def train(model = None, save_path = '', config={},  train_dataloader=None, val_d
             x, labels, edge_index = [item.float().to(device) for item in [x, labels, edge_index]]
 
             optimizer.zero_grad()
-            out = model(x, edge_index).float().to(device) # Fearutr Extractor + output layer
+            out = model(x, edge_index).float().to(device) # Feature Extractor + output layer
             loss = loss_func(out, labels) # calculate loss
             
             loss.backward()

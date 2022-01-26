@@ -85,37 +85,37 @@ class GraphLayer(MessagePassing):
                 edges,
                 return_attention_weights):
 
-        x_i = x_i.view(-1, self.heads, self.out_channels)
-        x_j = x_j.view(-1, self.heads, self.out_channels)
+        x_i = x_i.view(-1, self.heads, self.out_channels) # edge x_i
+        x_j = x_j.view(-1, self.heads, self.out_channels) # edge x_j
 
         if embedding is not None:
             embedding_i, embedding_j = embedding[edge_index_i], embedding[edges[0]]
-            embedding_i = embedding_i.unsqueeze(1).repeat(1,self.heads,1)
-            embedding_j = embedding_j.unsqueeze(1).repeat(1,self.heads,1)
+            embedding_i = embedding_i.unsqueeze(1).repeat(1,self.heads,1) # embedding v_i
+            embedding_j = embedding_j.unsqueeze(1).repeat(1,self.heads,1) # embedding v_j
 
-            key_i = torch.cat((x_i, embedding_i), dim=-1)
-            key_j = torch.cat((x_j, embedding_j), dim=-1)
+            key_i = torch.cat((x_i, embedding_i), dim=-1) # concat to g_i
+            key_j = torch.cat((x_j, embedding_j), dim=-1) # concat to g_j
 
 
 
-        cat_att_i = torch.cat((self.att_i, self.att_em_i), dim=-1)
-        cat_att_j = torch.cat((self.att_j, self.att_em_j), dim=-1)
+        cat_att_i = torch.cat((self.att_i, self.att_em_i), dim=-1) # parameter
+        cat_att_j = torch.cat((self.att_j, self.att_em_j), dim=-1) # parameter
 
-        alpha = (key_i * cat_att_i).sum(-1) + (key_j * cat_att_j).sum(-1)
+        alpha = (key_i * cat_att_i).sum(-1) + (key_j * cat_att_j).sum(-1) # why parameters attached to g_i..?
 
 
         alpha = alpha.view(-1, self.heads, 1)
 
 
-        alpha = F.leaky_relu(alpha, self.negative_slope)
-        alpha = softmax(alpha, edge_index_i, num_nodes=size_i)
+        alpha = F.leaky_relu(alpha, self.negative_slope) # equation 7
+        alpha = softmax(alpha, edge_index_i, num_nodes=size_i) # equation 8
 
         if return_attention_weights:
             self.__alpha__ = alpha
 
-        alpha = F.dropout(alpha, p=self.dropout, training=self.training)
+        alpha = F.dropout(alpha, p=self.dropout, training=self.training) # why..?
         
-        return x_j * alpha.view(-1, self.heads, 1)
+        return x_j * alpha.view(-1, self.heads, 1) # equation 5
 
 
 

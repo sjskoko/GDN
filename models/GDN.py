@@ -70,13 +70,13 @@ class GNNLayer(nn.Module):
 
     def forward(self, x, edge_index, embedding=None, node_num=0):
 
-        out, (new_edge_index, att_weight) = self.gnn(x, edge_index, embedding, return_attention_weights=True)
+        out, (new_edge_index, att_weight) = self.gnn(x, edge_index, embedding, return_attention_weights=True) # to graph_layer # why separate it...?
         self.att_weight_1 = att_weight
         self.edge_index_1 = new_edge_index
   
         out = self.bn(out)
         
-        return self.relu(out)
+        return self.relu(out) # equation 5: relu
 
 
 class GDN(nn.Module):
@@ -163,24 +163,24 @@ class GDN(nn.Module):
             gated_edge_index = torch.cat((gated_j, gated_i), dim=0)
 
             batch_gated_edge_index = get_batch_edge_index(gated_edge_index, batch_num, node_num).to(device)
-            gcn_out = self.gnn_layers[i](x, batch_gated_edge_index, node_num=node_num*batch_num, embedding=all_embeddings) # calculate z^(t)_N
+            gcn_out = self.gnn_layers[i](x, batch_gated_edge_index, node_num=node_num*batch_num, embedding=all_embeddings) # calculate z^(t)_N # to GNNlayer
 
             
             gcn_outs.append(gcn_out)
 
-        x = torch.cat(gcn_outs, dim=1)
+        x = torch.cat(gcn_outs, dim=1) # change z^(t)_N
         x = x.view(batch_num, node_num, -1) # z^(t)_N
 
 
         indexes = torch.arange(0,node_num).to(device)
-        out = torch.mul(x, self.embedding(indexes)) # mul z^(t)_N, embedding
+        out = torch.mul(x, self.embedding(indexes)) # mul z^(t)_N, embedding # equation 9
         
         out = out.permute(0,2,1) # use in case of batch normalize(?)
         out = F.relu(self.bn_outlayer_in(out)) # batch normalize
         out = out.permute(0,2,1)
 
         out = self.dp(out) # drop out
-        out = self.out_layer(out) # linear layer
+        out = self.out_layer(out) # linear layer # to outlayer # equation 9
         out = out.view(-1, node_num)
    
 
