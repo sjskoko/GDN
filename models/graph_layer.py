@@ -58,10 +58,11 @@ class GraphLayer(MessagePassing):
         else:
             x = (self.lin(x[0]), self.lin(x[1]))
 
+        # define edge index
         edge_index, _ = remove_self_loops(edge_index)
         edge_index, _ = add_self_loops(edge_index,
                                        num_nodes=x[1].size(self.node_dim))
-
+        # to self.message
         out = self.propagate(edge_index, x=x, embedding=embedding, edges=edge_index,
                              return_attention_weights=return_attention_weights)
 

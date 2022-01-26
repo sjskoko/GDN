@@ -47,20 +47,21 @@ def get_final_err_scores(test_result, val_result):
 
 def get_err_scores(test_res, val_res):
     test_predict, test_gt = test_res
-    val_predict, val_gt = val_res
+    val_predict, val_gt = val_res # why...?
 
-    n_err_mid, n_err_iqr = get_err_median_and_iqr(test_predict, test_gt)
-
+    n_err_mid, n_err_iqr = get_err_median_and_iqr(test_predict, test_gt) # calculate median, inter-quartile range
+    # err
     test_delta = np.abs(np.subtract(
                         np.array(test_predict).astype(np.float64), 
                         np.array(test_gt).astype(np.float64)
                     ))
     epsilon=1e-2
 
-    err_scores = (test_delta - n_err_mid) / ( np.abs(n_err_iqr) +epsilon)
+    err_scores = (test_delta - n_err_mid) / ( np.abs(n_err_iqr) +epsilon) # equation 12
 
     smoothed_err_scores = np.zeros(err_scores.shape)
     before_num = 3
+    # why smoothing...? 4 value
     for i in range(before_num, len(err_scores)):
         smoothed_err_scores[i] = np.mean(err_scores[i-before_num:i+1])
 
@@ -131,14 +132,14 @@ def get_best_performance_data(total_err_scores, gt_labels, topk=1):
     total_features = total_err_scores.shape[0]
 
     # topk_indices = np.argpartition(total_err_scores, range(total_features-1-topk, total_features-1), axis=0)[-topk-1:-1]
-    topk_indices = np.argpartition(total_err_scores, range(total_features-topk-1, total_features), axis=0)[-topk:]
+    topk_indices = np.argpartition(total_err_scores, range(total_features-topk-1, total_features), axis=0)[-topk:] # find {topk} top err
 
     total_topk_err_scores = []
     topk_err_score_map=[]
 
     total_topk_err_scores = np.sum(np.take_along_axis(total_err_scores, topk_indices, axis=0), axis=0)
 
-    final_topk_fmeas ,thresolds = eval_scores(total_topk_err_scores, gt_labels, 400, return_thresold=True)
+    final_topk_fmeas ,thresolds = eval_scores(total_topk_err_scores, gt_labels, 400, return_thresold=True) # F1 score, threshold
 
     th_i = final_topk_fmeas.index(max(final_topk_fmeas))
     thresold = thresolds[th_i]

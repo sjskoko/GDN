@@ -118,7 +118,7 @@ class Main():
             )
         
         # test            
-        self.model.load_state_dict(torch.load(model_save_path))
+        self.model.load_state_dict(torch.load(model_save_path)) # take best model
         best_model = self.model.to(self.device)
 
         _, self.test_result = test(best_model, self.test_dataloader)
@@ -148,13 +148,13 @@ class Main():
 
         return train_dataloader, val_dataloader
 
-    def get_score(self, test_result, val_result):
+    def get_score(self, test_result, val_result): # calculate Graph Deviation Score
 
         feature_num = len(test_result[0][0])
         np_test_result = np.array(test_result)
         np_val_result = np.array(val_result)
 
-        test_labels = np_test_result[2, :, 0].tolist()
+        test_labels = np_test_result[2, :, 0].tolist() # label
     
         test_scores, normal_scores = get_full_err_scores(test_result, val_result)
 

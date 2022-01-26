@@ -44,7 +44,7 @@ def test(model, dataloader):
         x, y, labels, edge_index = [item.to(device).float() for item in [x, y, labels, edge_index]]
         
         with torch.no_grad():
-            predicted = model(x, edge_index).float().to(device)
+            predicted = model(x, edge_index).float().to(device) # 
             
             
             loss = loss_func(predicted, y)
@@ -53,9 +53,9 @@ def test(model, dataloader):
             labels = labels.unsqueeze(1).repeat(1, predicted.shape[1])
 
             if len(t_test_predicted_list) <= 0:
-                t_test_predicted_list = predicted
-                t_test_ground_list = y
-                t_test_labels_list = labels
+                t_test_predicted_list = predicted # predicted value
+                t_test_ground_list = y # groundtruth
+                t_test_labels_list = labels 
             else:
                 t_test_predicted_list = torch.cat((t_test_predicted_list, predicted), dim=0)
                 t_test_ground_list = torch.cat((t_test_ground_list, y), dim=0)

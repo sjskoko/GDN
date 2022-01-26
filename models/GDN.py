@@ -163,24 +163,24 @@ class GDN(nn.Module):
             gated_edge_index = torch.cat((gated_j, gated_i), dim=0)
 
             batch_gated_edge_index = get_batch_edge_index(gated_edge_index, batch_num, node_num).to(device)
-            gcn_out = self.gnn_layers[i](x, batch_gated_edge_index, node_num=node_num*batch_num, embedding=all_embeddings)
+            gcn_out = self.gnn_layers[i](x, batch_gated_edge_index, node_num=node_num*batch_num, embedding=all_embeddings) # calculate z^(t)_N
 
             
             gcn_outs.append(gcn_out)
 
         x = torch.cat(gcn_outs, dim=1)
-        x = x.view(batch_num, node_num, -1)
+        x = x.view(batch_num, node_num, -1) # z^(t)_N
 
 
         indexes = torch.arange(0,node_num).to(device)
-        out = torch.mul(x, self.embedding(indexes))
+        out = torch.mul(x, self.embedding(indexes)) # mul z^(t)_N, embedding
         
-        out = out.permute(0,2,1)
-        out = F.relu(self.bn_outlayer_in(out))
+        out = out.permute(0,2,1) # use in case of batch normalize(?)
+        out = F.relu(self.bn_outlayer_in(out)) # batch normalize
         out = out.permute(0,2,1)
 
-        out = self.dp(out)
-        out = self.out_layer(out)
+        out = self.dp(out) # drop out
+        out = self.out_layer(out) # linear layer
         out = out.view(-1, node_num)
    
 

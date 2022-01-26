@@ -60,21 +60,21 @@ def train(model = None, save_path = '', config={},  train_dataloader=None, val_d
         acu_loss = 0
         model.train()
 
-        for x, labels, attack_labels, edge_index in dataloader:
+        for x, labels, attack_labels, edge_index in dataloader: # cal
             _start = time.time()
 
             x, labels, edge_index = [item.float().to(device) for item in [x, labels, edge_index]]
 
             optimizer.zero_grad()
-            out = model(x, edge_index).float().to(device)
-            loss = loss_func(out, labels)
+            out = model(x, edge_index).float().to(device) # Fearutr Extractor + output layer
+            loss = loss_func(out, labels) # calculate loss
             
             loss.backward()
             optimizer.step()
 
             
             train_loss_list.append(loss.item())
-            acu_loss += loss.item()
+            acu_loss += loss.item() # stack each batch
                 
             i += 1
 
@@ -88,9 +88,9 @@ def train(model = None, save_path = '', config={},  train_dataloader=None, val_d
         # use val dataset to judge
         if val_dataloader is not None:
 
-            val_loss, val_result = test(model, val_dataloader)
+            val_loss, val_result = test(model, val_dataloader) # go test.py / get prediction
 
-            if val_loss < min_loss:
+            if val_loss < min_loss: # if the model calculated this time is better than before, change model
                 torch.save(model.state_dict(), save_path)
 
                 min_loss = val_loss
@@ -99,7 +99,7 @@ def train(model = None, save_path = '', config={},  train_dataloader=None, val_d
                 stop_improve_count += 1
 
 
-            if stop_improve_count >= early_stop_win:
+            if stop_improve_count >= early_stop_win: # early stop window
                 break
 
         else:
