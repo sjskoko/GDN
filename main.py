@@ -106,6 +106,7 @@ class Main():
         else:
             model_save_path = self.get_save_path()[0]
 
+            # train
             self.train_log = train(self.model, model_save_path, 
                 config = train_config,
                 train_dataloader=self.train_dataloader,
@@ -124,6 +125,7 @@ class Main():
         _, self.test_result = test(best_model, self.test_dataloader)
         _, self.val_result = test(best_model, self.val_dataloader)
 
+        # get F1, precision, recall
         self.get_score(self.test_result, self.val_result)
 
     def get_loaders(self, train_dataset, seed, batch, val_ratio=0.1):
@@ -183,7 +185,7 @@ class Main():
             now = datetime.now()
             self.datestr = now.strftime('%m_%d-%H_%M_%S') # |, : -> _
         datestr = self.datestr          
-
+ 
         paths = [
             f'./pretrained/{dir_path}/best_{datestr}.pt',
             f'./results/{dir_path}/{datestr}.csv',

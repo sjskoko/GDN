@@ -53,7 +53,7 @@ class GraphLayer(MessagePassing):
     def forward(self, x, edge_index, embedding, return_attention_weights=False):
         """"""
         if torch.is_tensor(x):
-            x = self.lin(x)
+            x = self.lin(x) # Wx_i
             x = (x, x)
         else:
             x = (self.lin(x[0]), self.lin(x[1]))
