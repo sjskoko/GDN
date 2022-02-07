@@ -127,3 +127,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+data/HAI/test.csv
+data/HAI/train.csv
