@@ -201,8 +201,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-batch', help='batch size', type = int, default=512)
-    parser.add_argument('-epoch', help='train epoch', type = int, default=100)
+    parser.add_argument('-batch', help='batch size', type = int, default=64)
+    parser.add_argument('-epoch', help='train epoch', type = int, default=120)
     parser.add_argument('-slide_win', help='slide_win', type = int, default=15)
     parser.add_argument('-dim', help='dimension', type = int, default=64)
     parser.add_argument('-slide_stride', help='slide_stride', type = int, default=5)

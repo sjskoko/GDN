@@ -39,7 +39,7 @@ def train(model = None, save_path = '', config={},  train_dataloader=None, val_d
 
 
     acu_loss = 0
-    min_loss = 1e+8
+    min_loss = 1e+20
     min_f1 = 0
     min_pre = 0
     best_prec = 0
