@@ -201,7 +201,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-batch', help='batch size', type = int, default=64)
+    parser.add_argument('-batch', help='batch size', type = int, default=128)
     parser.add_argument('-epoch', help='train epoch', type = int, default=120)
     parser.add_argument('-slide_win', help='slide_win', type = int, default=15)
     parser.add_argument('-dim', help='dimension', type = int, default=64)
@@ -215,7 +215,7 @@ if __name__ == "__main__":
     parser.add_argument('-out_layer_inter_dim', help='out_layer_inter_dim', type = int, default=256)
     parser.add_argument('-decay', help='decay', type = float, default=0)
     parser.add_argument('-val_ratio', help='val ratio', type = float, default=0.1)
-    parser.add_argument('-topk', help='topk num', type = int, default=40)
+    parser.add_argument('-topk', help='topk num', type = int, default=30)
     parser.add_argument('-report', help='best / val', type = str, default='best')
     parser.add_argument('-load_model_path', help='trained model path', type = str, default='')
 
