@@ -217,7 +217,7 @@ if __name__ == "__main__":
     parser.add_argument('-val_ratio', help='val ratio', type = float, default=0.1)
     parser.add_argument('-topk', help='topk num', type = int, default=30)
     parser.add_argument('-report', help='best / val', type = str, default='best')
-    parser.add_argument('-load_model_path', help='trained model path', type = str, default='')
+    parser.add_argument('-load_model_path', help='trained model path', type = str, default=f'./pretrained/best_02_09-09_24_43.pt')
 
     args = parser.parse_args()
 
