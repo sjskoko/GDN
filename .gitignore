@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 data/HAI/test.csv
 data/HAI/train.csv
+data/HAI_norm/test.csv
+data/HAI_norm/train.csv

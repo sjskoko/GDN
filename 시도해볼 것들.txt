@@ -1,0 +1,5 @@
+1. dataset 정규화 (완료: normalize한 결과 0.7 수준의 F1 score 확인)
+2. topk 40으로 (좀 더 연결해서 뽑아보면 recall이 더 나아지지 않을까?)
+3. attack prediction 부분 찾기 (get score 부분 확실하게 보자)
+4. slide window 조정 (글쎄...?)
+
