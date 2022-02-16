@@ -203,8 +203,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-batch', help='batch size', type = int, default=128)
-    parser.add_argument('-epoch', help='train epoch', type = int, default=20)
-    parser.add_argument('-slide_win', help='slide_win', type = int, default=15)
+    parser.add_argument('-epoch', help='train epoch', type = int, default=100)
+    parser.add_argument('-slide_win', help='slide_win', type = int, default=50)
     parser.add_argument('-dim', help='dimension', type = int, default=64)
     parser.add_argument('-slide_stride', help='slide_stride', type = int, default=5)
     parser.add_argument('-save_path_pattern', help='save path pattern', type = str, default='')
@@ -218,7 +218,7 @@ if __name__ == "__main__":
     parser.add_argument('-val_ratio', help='val ratio', type = float, default=0.1)
     parser.add_argument('-topk', help='topk num', type = int, default=20)
     parser.add_argument('-report', help='best / val', type = str, default='best')
-    parser.add_argument('-load_model_path', help='trained model path', type = str, default=f'./pretrained//best_02_10-15_55_34.pt')
+    parser.add_argument('-load_model_path', help='trained model path', type = str, default=f'')
 
     args = parser.parse_args()
 
